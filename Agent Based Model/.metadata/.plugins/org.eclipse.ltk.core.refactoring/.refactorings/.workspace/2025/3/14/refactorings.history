@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete 6 resources" deleteContents="false" description="Delete 6 resources" element1="/Tutorials/Road Traffic/includes/Sample_Buildings.shp" element2="/Tutorials/Road Traffic/includes/Sample_Buildings.cpg" element3="/Tutorials/Road Traffic/includes/Sample_Buildings.dbf" element4="/Tutorials/Road Traffic/includes/Sample_Buildings.prj" element5="/Tutorials/Road Traffic/includes/Sample_Buildings.qix" element6="/Tutorials/Road Traffic/includes/Sample_Buildings.shx" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="6" stamp="1743331991534"/>
+</session>

@@ -1,0 +1,11 @@
+pandas==2.2.1
+numpy==1.26.4
+geopandas==0.14.3
+shapely==2.0.3
+libpysal==4.9
+esda==2.5.1
+scikit-learn==1.4.1
+mgwr==2.1.2
+spglm==1.0.8
+matplotlib==3.8.3
+seaborn==0.13.2

@@ -1,0 +1,56 @@
+model energy_policy_model
+
+global {
+    bool subsidy_available <- true;
+    float subsidy_rate <- 0.5;
+    float total_energy <- 0.0;
+
+    init {
+        create building from: file("C:/Users/kemun/Gama_Workspace/EnergyPolicySimulation/data/Sample_Buildings.shp") {
+            energy_consumption <- 1000 + rnd(500);
+            decision_probability <- 0.3;
+        }
+    }
+
+    reflex update_total_energy {
+        total_energy <- sum(building collect each.energy_consumption);
+    }
+}
+
+species building {
+    float energy_consumption <- 1000.0;
+    bool upgraded <- false;
+    float decision_probability <- 0.3;
+    rgb my_color;
+
+    reflex make_decision {
+        if (!upgraded and subsidy_available) {
+            if (rnd(1.0) < decision_probability) {
+                upgraded <- true;
+                energy_consumption <- energy_consumption * 0.7;
+            }
+        }
+    }
+
+    reflex update_color {
+        if upgraded {
+            my_color <- rgb("00cc00"); // green
+        } else {
+            my_color <- rgb("cccccc"); // gray
+        }
+    }
+
+    aspect base {
+        draw shape color: my_color;
+    }
+}
+
+experiment energy_policy type: gui {
+    output {
+        display map_display {
+            species building aspect: base;
+        }
+
+        monitor "Total Energy Consumption" value: total_energy;
+    }
+}

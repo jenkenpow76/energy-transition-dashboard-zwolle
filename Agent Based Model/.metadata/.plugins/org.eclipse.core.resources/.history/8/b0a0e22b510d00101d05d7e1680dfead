@@ -1,0 +1,31 @@
+/**
+* Name: LoadShapefile
+* Based on the internal empty template. 
+* Author: kemun
+* Tags: 
+*/
+
+
+model LoadShapefile
+
+/* Insert your model definition here */
+
+global {
+    init {
+        create my_shape from: file("../data/Sample_Buildings.shp");
+    }
+}
+
+species my_shape {
+    aspect base {
+        draw shape color: rgb("3366cc");
+    }
+}
+
+experiment show_shapes type: gui {
+    output {
+        display map_display {
+            species my_shape aspect: base;
+        }
+    }
+}

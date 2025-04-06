@@ -1,0 +1,44 @@
+/**
+* Name: LoadShapefile
+* Based on the internal empty template. 
+* Author: kemun
+* Tags: 
+*/
+
+
+model LoadShapefile
+
+global {
+    // Parameter to select the shapefile in the interface
+    file shape_file_buildings <- file("../data/Sample_Buildings.shp");
+
+    init {
+        // Create agents from the shapefile
+        create my_shape from:(shape_file_buildings){ 
+            color <- #blue;
+        }
+
+        // Debug print to confirm how many shapes were loaded
+        write "✅ Loaded shapes: " + length(my_shape);
+    }
+}
+
+species my_shape {
+    rgb color;
+
+    aspect base {
+        draw shape color: color;
+    }
+}
+
+experiment show_shapes type: gui {
+    parameter "Shapefile for the buildings:" var: shape_file_buildings category: "GIS" ;
+
+    output {
+        display map_display {
+            species my_shape aspect: base;
+        }
+
+        monitor "Number of Shapes" value: length(my_shape);
+    }
+}

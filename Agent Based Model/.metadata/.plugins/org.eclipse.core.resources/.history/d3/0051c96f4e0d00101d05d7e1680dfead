@@ -1,0 +1,70 @@
+model energy_policy_model
+
+global {
+    bool subsidy_available <- true;
+    float subsidy_rate <- 0.5;
+    float total_energy <- 0.0;
+
+    init {
+        create building from: file("../data/Sample_Buildings.shp") {
+            energy_consumption <- 1000 + rnd(500);
+            decision_probability <- 0.3;
+        }
+    }
+
+    reflex update_total_energy {
+        total_energy <- sum(building collect each.energy_consumption);
+    }
+
+    reflex assign_coaching {
+        ask n_of(building, 50) each {
+            do coach_building;
+        }
+    }
+}
+
+species building {
+    float energy_consumption <- 1000.0;
+    bool upgraded <- false;
+    bool coached <- false;
+    float decision_probability <- 0.3;
+    rgb my_color;
+
+    action coach_building {
+        coached <- true;
+        decision_probability <- decision_probability + 0.4;
+    }
+
+    reflex make_decision {
+        if (!upgraded and (coached or subsidy_available)) {
+            if (rnd(1.0) < decision_probability) {
+                upgraded <- true;
+                energy_consumption <- energy_consumption * 0.7;
+            }
+        }
+    }
+
+    reflex update_color {
+        if upgraded {
+            my_color <- rgb("00cc00"); // green
+        } else if coached {
+            my_color <- rgb("ffcc00"); // yellow
+        } else {
+            my_color <- rgb("cccccc"); // gray
+        }
+    }
+
+    aspect base {
+        draw shape color: my_color;
+    }
+}
+
+experiment energy_policy type: gui {
+    output {
+        display map_display {
+            species building aspect: base;
+        }
+
+        monitor "Total Energy Consumption" value: total_energy;
+    }
+}

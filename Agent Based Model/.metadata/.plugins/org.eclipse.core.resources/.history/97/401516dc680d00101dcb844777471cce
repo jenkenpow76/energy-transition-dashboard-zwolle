@@ -1,0 +1,81 @@
+model energy_policy_model
+
+global {
+    file shape_file_buildings <- file("../data/building.shp");
+    file shape_file_roads <- file("../data/road.shp");
+    file shape_file_bounds <- file("../data/bounds.shp");
+    geometry shape <- envelope(shape_file_bounds);
+
+    bool subsidy_available <- true;
+    float subsidy_rate <- 0.5;
+    float total_energy <- 0.0;
+    float step <- 10 #mn;
+
+    init {
+        create building from: shape_file_buildings with: [
+            type::string(read("NATURE"))
+        ] {
+            energy_consumption <- 1000 + rnd(500);
+            decision_probability <- 0.3;
+            my_color <- #gray; // initial color
+        }
+
+        create road from: shape_file_roads;
+    }
+
+    reflex update_total_energy {
+        total_energy <- sum(building collect each.energy_consumption);
+    }
+}
+
+species building {
+    string type;
+    float energy_consumption <- 1000.0;
+    bool upgraded <- false;
+    float decision_probability <- 0.3;
+    rgb my_color;
+
+    reflex make_decision {
+        if (!upgraded and subsidy_available) {
+            if (rnd(1.0) < decision_probability) {
+                upgraded <- true;
+                energy_consumption <- energy_consumption * 0.7;
+            }
+        }
+    }
+
+    reflex update_color {
+        if upgraded {
+            my_color <- #green;
+        } else {
+            my_color <- #gray;
+        }
+    }
+
+    aspect base {
+        draw shape color: my_color;
+    }
+}
+
+species road {
+    rgb color <- #black;
+
+    aspect base {
+        draw shape color: color;
+    }
+}
+
+experiment energy_policy type: gui {
+    parameter "Shapefile for the buildings:" var: shape_file_buildings category: "GIS";
+    parameter "Shapefile for the roads:" var: shape_file_roads category: "GIS";
+    parameter "Shapefile for the bounds:" var: shape_file_bounds category: "GIS";
+
+    output {
+        display map_display type: 3d {
+            species building aspect: base;
+            species road aspect: base;
+        }
+
+        monitor "Total Energy Consumption" value: total_energy;
+    }
+}

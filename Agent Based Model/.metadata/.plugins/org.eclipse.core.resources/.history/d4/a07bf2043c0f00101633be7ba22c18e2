@@ -1,0 +1,139 @@
+// Interactive Energy Policy Model - With Stakeholder Controls
+model energy_policy_model
+
+global {
+    // Load shapefiles
+    file shape_file_buildings <- file("../data/building.shp");
+    file shape_file_roads <- file("../data/road.shp");
+    file shape_file_bounds <- file("../data/bounds.shp");
+    geometry shape <- envelope(shape_file_bounds);
+
+    // Policy and simulation controls
+    bool subsidy_available <- true;
+    float subsidy_rate <- 0.5;
+    float upgrade_cost <- 10000.0;
+    int subsidy_end_year <- 2050;
+    int max_subsidized_buildings <- 100;
+    float total_energy <- 0.0;
+    float step <- 1 #day;
+    int current_year <- 2025;
+
+    init {
+        // Create buildings from shapefile
+        create building from: shape_file_buildings with: [
+            type::string(read("NATURE"))
+        ] {
+            energy_consumption <- 1000 + rnd(500);
+            decision_probability <- 0.3;
+            budget <- 3000 + rnd(3000); // $3000–$6000
+
+            if type = "Industrial" {
+                my_color <- #red;
+            } else {
+                my_color <- #gray;
+            }
+        }
+
+        // Create roads
+        create road from: shape_file_roads;
+    }
+
+    // Yearly policy logic
+    reflex simulate_policy {
+        if (cycle mod 365 = 0) {
+            current_year <- current_year + 1;
+
+            if current_year > subsidy_end_year {
+                subsidy_available <- false;
+            }
+
+            // Select eligible non-industrial, non-upgraded buildings
+            list<building> eligible_buildings <- building where (each.upgraded = false and each.type != "Industrial");
+            list<building> subsidized_targets <- shuffle(eligible_buildings)[0::max_subsidized_buildings - 1];
+
+
+            ask subsidized_targets {
+                if (subsidy_available) {
+                    float subsidy_amount <- upgrade_cost * subsidy_rate;
+                    float owner_share <- upgrade_cost - subsidy_amount;
+
+                    if (budget >= owner_share and rnd(1.0) < decision_probability) {
+                        upgraded <- true;
+                        budget <- budget - owner_share;
+                        energy_consumption <- energy_consumption * 0.7;
+                    }
+                }
+
+                if upgraded {
+                    my_color <- #green;
+                } else {
+                    if type = "Industrial" {
+                        my_color <- #red;
+                    } else {
+                        my_color <- #gray;
+                    }
+                }
+            }
+
+            // Recalculate total energy
+            total_energy <- sum(building collect each.energy_consumption);
+        }
+    }
+}
+
+species building {
+    string type;
+    float energy_consumption <- 1000.0;
+    bool upgraded <- false;
+    float decision_probability <- 0.3;
+    float budget <- 5000.0;
+    rgb my_color;
+
+    aspect base {
+        draw shape color: my_color;
+    }
+}
+
+species road {
+    rgb color <- #black;
+
+    aspect base {
+        draw shape color: color;
+    }
+}
+
+experiment energy_policy type: gui {
+    // Stakeholder-adjustable parameters
+    parameter "Subsidy Rate" var: subsidy_rate category: "Policy" min: 0.0 max: 1.0 step: 0.05;
+    parameter "Upgrade Cost ($)" var: upgrade_cost category: "Policy" min: 1000 max: 50000 step: 500;
+    parameter "Max Subsidized Buildings / Year" var: max_subsidized_buildings category: "Policy" min: 0 max: 1000 step: 10;
+    parameter "Subsidy Available?" var: subsidy_available category: "Policy";
+    parameter "End Subsidy After Year" var: subsidy_end_year category: "Policy" min: 2025 max: 2050;
+
+    parameter "Shapefile for the buildings:" var: shape_file_buildings category: "GIS";
+    parameter "Shapefile for the roads:" var: shape_file_roads category: "GIS";
+    parameter "Shapefile for the bounds:" var: shape_file_bounds category: "GIS";
+
+    output {
+        // Map view
+        display map_display type: 3d {
+            species building aspect: base;
+            species road aspect: base;
+        }
+
+        // Energy over time chart
+        display energy_chart {
+            chart "Energy Use Over Time" type: series {
+                data "Yearly Total Energy" value: total_energy;
+            }
+        }
+
+        // Status monitors
+        monitor "Total Energy Consumption" value: total_energy;
+        monitor "Simulation Year" value: current_year;
+        monitor "Subsidy Still Active?" value: subsidy_available;
+        monitor "Upgrade Cost ($)" value: upgrade_cost;
+        monitor "Max Subsidized Buildings / Year" value: max_subsidized_buildings;
+        monitor "Average Building Budget ($)" value: mean(building collect each.budget);
+    }
+}

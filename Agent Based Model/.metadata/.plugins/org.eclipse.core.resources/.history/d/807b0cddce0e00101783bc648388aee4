@@ -1,0 +1,118 @@
+// Building a model named energy_policy_model, focused on simulating energy policy effects using buildings from a shapefile
+model energy_policy_model 
+
+// The overall setup and parameters for the model 
+global {
+    file shape_file_buildings <- file("../data/building.shp");
+    file shape_file_roads <- file("../data/road.shp");
+    file shape_file_bounds <- file("../data/bounds.shp");
+    geometry shape <- envelope(shape_file_bounds); // Sets the visual extent (zoom area) of your simulation based on the bounds.shp file
+
+    // Model policy and tracking variables
+    bool subsidy_available <- true;       // Determines if building upgrades are subsidized
+    float subsidy_rate <- 0.5;            // Placeholder for possible future cost-based effects
+    float total_energy <- 0.0;            // Tracks the total energy consumed by all buildings
+    float step <- 1 #day;                 // Simulation step duration (one day)
+    int current_year <- 2025;             // Simulation time tracked in years
+
+    // Loads all buildings from the shapefile and reads their NATURE attribute (e.g., Residential, Industrial, etc.) into 'type'.
+    // Assigns a random initial energy_consumption (between 1000–1500).
+    // Sets a 30% base probability to decide to upgrade
+    init {
+        create building from: shape_file_buildings with: [
+            type::string(read("NATURE"))
+        ] {
+            energy_consumption <- 1000 + rnd(500);
+            decision_probability <- 0.3;
+
+            // Initial color based on type
+            if type = "Industrial" {
+                my_color <- #red; // Industrial buildings = red
+            } else {
+                my_color <- #gray; // Residential/others = gray
+            }
+        }
+
+        create road from: shape_file_roads;
+    }
+
+    // Every simulated year (based on cycle), buildings may upgrade, and energy is recalculated
+    reflex simulate_policy {
+        // Run once per year
+        if (cycle mod 365 = 0) {
+            current_year <- current_year + 1;
+
+            ask building {
+                // Only non-upgraded, non-industrial buildings with subsidy
+                if (!upgraded and subsidy_available and type != "Industrial") {
+                    if (rnd(1.0) < decision_probability) {
+                        upgraded <- true;
+                        energy_consumption <- energy_consumption * 0.7;
+                    }
+                }
+
+                // Update color
+                if upgraded {
+                    my_color <- #green;
+                } else {
+                    if type = "Industrial" {
+                        my_color <- #red;
+                    } else {
+                        my_color <- #gray;
+                    }
+                }
+            }
+
+            total_energy <- sum(building collect each.energy_consumption);
+        }
+    }
+}
+
+// This defines the behavior and properties of each building in the model
+species building {
+    string type;
+    float energy_consumption <- 1000.0;
+    bool upgraded <- false;
+    float decision_probability <- 0.3;
+    rgb my_color;
+
+    // Aspect for drawing buildings with color indicating their upgrade status
+    aspect base {
+        draw shape color: my_color;
+    }
+}
+
+// Defines road geometry with a static black color
+species road {
+    rgb color <- #black;
+
+    aspect base {
+        draw shape color: color;
+    }
+}
+
+// GUI-based experiment setup
+experiment energy_policy type: gui {
+    parameter "Shapefile for the buildings:" var: shape_file_buildings category: "GIS";
+    parameter "Shapefile for the roads:" var: shape_file_roads category: "GIS";
+    parameter "Shapefile for the bounds:" var: shape_file_bounds category: "GIS";
+
+    output {
+        // Display 1: 3D map
+        display map_display type: 3d {
+            species building aspect: base;
+            species road aspect: base;
+        }
+
+        // Display 2: Chart display
+        display energy_chart_display {
+            chart "Energy Use Over Time" type: series {
+                data "Total Energy" value: total_energy;
+            }
+        }
+
+        // Monitors
+        monitor "Total Energy Consumption" value: total_energy;
+        monitor "Simulation Year" value: current_year;
+    }
+}
