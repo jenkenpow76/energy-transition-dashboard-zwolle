@@ -2,6 +2,7 @@
 ![Jupyter](https://img.shields.io/badge/Notebook-Jupyter-F37626?logo=jupyter)
 ![GAMA](https://img.shields.io/badge/Model-GAMA-lightgrey?logo=gamedev)
 ![License](https://img.shields.io/badge/License-MIT-green)
+<img src="assests/utwente_logo.png" width="220"/>
 
 # Energy Transition Dashboard – Zwolle
 
