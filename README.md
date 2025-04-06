@@ -147,20 +147,20 @@ This model, developed in **GAMA Platform v1.9.1**, simulates how buildings respo
 
 ## Project Folder Structure
 
-```
-.
-├── raw_data/                    # Raw input files (subsidies, demographics, GIS)
-├── clean_data/                 # Cleaned and processed datasets
-├── aggregated_data/            # Final merged datasets
-├── geocoded_data/              # Files enriched with spatial coordinates
-├── mapped_data/                # Datasets joined with geometry
-├── minimized_data/             # Streamlined datasets for modeling
-├── scripts/                    # Jupyter notebooks (1–9)
-├── Geographically weighted Regression/  # GWR notebook and scripts
-├── Agent Based Model/                     # GAMA model files
-├── data/                       # Shapefiles required by the GAMA model
-├── requirements.txt            # Python dependencies
-```
+| Folder / File                         | Description                                       |
+|--------------------------------------|---------------------------------------------------|
+| `raw_data/`                           | Raw input files (subsidies, demographics, GIS)    |
+| `clean_data/`                         | Cleaned and processed datasets                    |
+| `aggregated_data/`                    | Final merged datasets                             |
+| `geocoded_data/`                      | Files enriched with spatial coordinates           |
+| `mapped_data/`                        | Datasets joined with geometry                     |
+| `minimized_data/`                     | Streamlined datasets for modeling                 |
+| `scripts/`                            | Jupyter notebooks (1–9)                           |
+| `Geographically weighted Regression/` | GWR notebook and scripts                          |
+| `Agent Based Model/`                  | GAMA model files                                  |
+| `data/`                               | Shapefiles required by the GAMA model             |
+| `requirements.txt`                    | Python dependencies                               |
+
 
 ---
 
