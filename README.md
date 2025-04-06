@@ -3,7 +3,7 @@
 ![GAMA](https://img.shields.io/badge/AgentBasedModel-GAMA-lightgrey?logo=gamedev)
 ![License](https://img.shields.io/badge/License-MIT-green)
 <p align="right">
-  <img src="assets/utwente_logo.png" width="200"/>
+  <img src="assests/utwente_logo.png" width="200"/>
 </p>
 
 
