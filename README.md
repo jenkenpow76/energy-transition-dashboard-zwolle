@@ -4,16 +4,6 @@ This repository contains a complete pipeline for processing, cleaning, and analy
 #  Clean Energy Data Processing Project
 This project focuses on processing, cleaning, enriching, and analyzing clean energy and subsidy data at the neighborhood level. It involves multiple stages of data transformation, from raw data ingestion to geocoding and mapping.
 
-##  Project Structure
-
-├── aggregated_data/       # Final combined and aggregated data sets
-├── clean_data/            # Cleaned versions of the raw data
-├── geocoded_data/         # Data enriched with geolocation info
-├── mapped_data/           # Data with mapping info (e.g., neighborhood boundaries)
-├── minimized_data/        # Streamlined datasets for efficient use
-├── raw_data/              # Original unprocessed data
-└── scripts/               # Jupyter notebooks for cleaning and processing
-
 ##  Notebooks Overview
 Each notebook performs a specific data cleaning or transformation step:
 
