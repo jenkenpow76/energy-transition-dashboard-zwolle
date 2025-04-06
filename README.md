@@ -105,7 +105,7 @@ This model, developed in **GAMA Platform v1.9.1**, simulates how buildings respo
 - `building`: Each building has its own budget, energy use, and decision rules
 - `road`: Used for spatial display
 - Spatial inputs: `building.shp`, `road.shp`, and `bounds.shp`
-- 
+  
 Make sure the following files are present in the `data/` folder:
 - `building.shp`, `building.shx`, `building.dbf`
 - `road.shp`, `road.shx`, `road.dbf`
