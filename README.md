@@ -1,8 +1,11 @@
 ![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python)
 ![Jupyter](https://img.shields.io/badge/Notebook-Jupyter-F37626?logo=jupyter)
-![GAMA](https://img.shields.io/badge/Model-GAMA-lightgrey?logo=gamedev)
+![GAMA](https://img.shields.io/badge/AgentBasedModel-GAMA-lightgrey?logo=gamedev)
 ![License](https://img.shields.io/badge/License-MIT-green)
-<img src="assests/utwente_logo.png" width="220"/>
+<p align="right">
+  <img src="assets/utwente_logo.png" width="200"/>
+</p>
+
 
 # Energy Transition Dashboard – Zwolle
 
