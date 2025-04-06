@@ -105,6 +105,12 @@ This model, developed in **GAMA Platform v1.9.1**, simulates how buildings respo
 - `building`: Each building has its own budget, energy use, and decision rules
 - `road`: Used for spatial display
 - Spatial inputs: `building.shp`, `road.shp`, and `bounds.shp`
+- 
+Make sure the following files are present in the `data/` folder:
+- `building.shp`, `building.shx`, `building.dbf`
+- `road.shp`, `road.shx`, `road.dbf`
+- `bounds.shp`, `bounds.shx`, `bounds.dbf`
+
 
 ### Decision-Making Logic
 
@@ -122,10 +128,21 @@ This model, developed in **GAMA Platform v1.9.1**, simulates how buildings respo
 
 ### Running the Model
 
-1. Download GAMA: [https://gama-platform.org](https://gama-platform.org)
-2. Import this folder as an existing project into the GAMA workspace
-3. Open `energy_policy_model.gaml` and run the `energy_policy` experiment
-4. Adjust parameters in the GUI to simulate different policies
+1. **Install GAMA Platform**  
+   Download from: [https://gama-platform.org](https://gama-platform.org)
+
+2. **Open GAMA**  
+   - Go to `File > Import > Existing Projects into Workspace`
+   - Select the folder containing the `.project`, `models/`, and `data/` directories
+
+3. **Load the Model**  
+   - Open the file `energy_policy_model.gaml` inside the `models/` folder
+
+4. **Run the Experiment**  
+   - Select the experiment named `energy_policy` and press **Run**
+   - Adjust parameters interactively using the sidebar controls
+
+
 
 ### GUI Parameters
 
