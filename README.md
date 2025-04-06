@@ -1,15 +1,39 @@
 # energy-transition-dashboard-zwolle
-This repository contains data and scripts for modelling the Energy Coaching and Subsidies Dashboard for the Municipality of Zwolle.
+This repository contains a complete pipeline for processing, cleaning, and analyzing  datasets at the neighborhood level. It also contains scripts used for Geographically weihhted regression and Agent Based Model.  
 
-Datasets
-### Datasets Used
+#  Clean Energy Data Processing Project
+This project focuses on processing, cleaning, enriching, and analyzing clean energy and subsidy data at the neighborhood level. It involves multiple stages of data transformation, from raw data ingestion to geocoding and mapping.
 
-| Dataset | Source | Format | Description | Use |
-|--------|--------|--------|-------------|-----|
-| Thema's Buurten 2015–2023 (one file for each year) | Gemeente Zwolle | Excel | Contains social, demographic, and energy indicators at the neighborhood level | - Cleaned and renamed columns<br>- Extracted relevant indicators<br>- Merged with geographic data |
-| Buurtgrenzen Zwolle | CBS / Gemeente Zwolle | Shapefile | Spatial boundaries of neighborhoods | - Used as the primary spatial join layer<br>- Used for mapping and aggregating results per neighborhood and district |
-| Coachgesprekken HOOMdossier | HOOMdossier | Excel | Number and type of energy coaching per buurt | - Geocoded the postcodes<br>- Aggregated sessions by neighborhood and district<br>- Used to analyze spatial coaching distribution |
-| SDE | Gemeente Zwolle | CSV | SDE subsidy applications (production-based renewable energy) | - Added neighborhood information through spatial join<br>- Aggregated by neighborhood for analysis<br>- Used in regression and visualization |
-| SCE | Gemeente Zwolle | CSV | Subsidy for local energy cooperatives | - Added neighborhood information through spatial join<br>- Aggregated by neighborhood for analysis<br>- Used in regression and visualization |
-| ISDE | Gemeente Zwolle | CSV | Investment subsidy for sustainable heat | - Geocoded the postcodes<br>- Added neighborhood information through spatial join<br>- Aggregated by neighborhood for analysis<br>- Used in regression and visualization |
-| SPUK (Local Subsidies known as WOZ) | Gemeente Zwolle | CSV |  | - Geocoded the postcode<br>- Aggregated by neighborhood for analysis<br>- Used in regression and visualization |
+##  Project Structure
+
+├── aggregated_data/       # Final combined and aggregated data sets
+├── clean_data/            # Cleaned versions of the raw data
+├── geocoded_data/         # Data enriched with geolocation info
+├── mapped_data/           # Data with mapping info (e.g., neighborhood boundaries)
+├── minimized_data/        # Streamlined datasets for efficient use
+├── raw_data/              # Original unprocessed data
+└── scripts/               # Jupyter notebooks for cleaning and processing
+
+##  Notebooks Overview
+Each notebook performs a specific data cleaning or transformation step:
+
+| Notebook                                | Description                                      |
+|-----------------------------------------|--------------------------------------------------|
+| `01_cleanEnergyCoaching.ipynb`          | Cleans and standardizes energy coaching data     |
+| `02_clean_SDESubsidy.ipynb`             | Processes SDE subsidy information                |
+| `03_clean_SCESubsidy.ipynb`             | Cleans SCE subsidy records                       |
+| `04_clean_ISDESubsidy.ipynb`            | Standardizes ISDE subsidy datasets               |
+| `05_cleanDemographicBuurt.ipynb`        | Integrates demographic data at neighborhood level |
+| `06_cleanEnergyConsumptionBuurt.ipynb`  | Processes energy consumption by neighborhood     |
+| `07_cleanBuildings.ipynb`               | Cleans building-related data                     |
+| `08_Add_Neighbourhood to csvs.ipynb`    | Adds neighborhood codes to all relevant data     |
+| `09_clean_localSubsidy.ipynb`           | Handles local subsidy datasets                   |
+
+## Tools & Technologies
+
+- Python 
+- Jupyter Notebooks
+- CSV & GeoJSON formats
+
+
+
