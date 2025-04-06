@@ -18,7 +18,7 @@ It is designed for researchers, policy analysts, and planners interested in loca
 - Install all dependencies via:
 
 ```
-pip install -r requirements.txt
+pip install -r Requirements.txt
 ```
 
 ---
@@ -157,7 +157,7 @@ This model, developed in **GAMA Platform v1.9.1**, simulates how buildings respo
 
 ## License
 
-
+MIT License
 
 ---
 
