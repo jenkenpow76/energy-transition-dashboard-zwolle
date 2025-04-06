@@ -1,3 +1,8 @@
+![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python)
+![Jupyter](https://img.shields.io/badge/Notebook-Jupyter-F37626?logo=jupyter)
+![GAMA](https://img.shields.io/badge/Model-GAMA-lightgrey?logo=gamedev)
+![License](https://img.shields.io/badge/License-MIT-green)
+
 # Energy Transition Dashboard – Zwolle
 
 This repository presents a complete, modular workflow for building a neighborhood-level **energy transition dashboard** for the municipality of Zwolle. It integrates **data cleaning**, **spatial analysis**, and **agent-based simulation modeling** to explore how energy policies like subsidies and coaching programs impact local energy consumption.
