@@ -32,7 +32,21 @@ pip install -r Requirements.txt
 
 ---
 
-## 1. Clean Energy Data Processing
+
+
+## 1. Datasets
+
+| Dataset                                         | Source                 | Format   | Description                                                                                   | Use                                                                                                                                   |
+|-------------------------------------------------|------------------------|----------|-----------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| Thema's Buurten 2015–2023 (one file per year)   | Gemeente Zwolle        | Excel    | Contains social, demographic, and energy indicators at the neighborhood level                | Cleaned and renamed columns. Extracted relevant indicators. Merged with geographic data.                                               |
+| Buurtgrenzen Zwolle                             | CBS / Gemeente Zwolle  | Shapefile| Spatial boundaries of neighborhoods                                                           | Used as the primary spatial join layer. Used for mapping and aggregating results per neighborhood and district.                        |
+| Coachgesprekken HOOMdossier                     | HOOMdossier            | Excel    | Number and type of energy coaching per buurt                                                  | Geocoded the postcodes. Aggregated sessions by neighborhood and district. Used to analyze spatial coaching distribution.              |
+| SDE                                             | Gemeente Zwolle        | CSV      | SDE subsidy applications (production-based renewable energy)                                  | Added neighborhood information through spatial join. Aggregated by neighborhood for analysis. Used in regression and visualization.   |
+| SCE                                             | Gemeente Zwolle        | CSV      | Subsidy for local energy cooperatives                                                         | Added neighborhood information through spatial join. Aggregated by neighborhood for analysis. Used in regression and visualization.   |
+| ISDE                                            | Gemeente Zwolle        | CSV      | Investment subsidy for sustainable heat                                                       | Geocoded the postcodes. Added neighborhood information through spatial join. Aggregated by neighborhood for analysis. Used in regression and visualization. |
+| SPUK (Local Subsidies known as WOZ)             | Gemeente Zwolle        | CSV      |                                                                                               | Geocoded the postcode. Aggregated by neighborhood for analysis. Used in regression and visualization.                                 |
+
+## 2. Clean Energy Data Processing
 
 This step prepares the base datasets used in GWR and mapping.
 
@@ -52,7 +66,7 @@ This step prepares the base datasets used in GWR and mapping.
 
 ---
 
-## 2. Spatial Modeling: Geographically Weighted Regression (GWR)
+## 3. Spatial Modeling: Geographically Weighted Regression (GWR)
 
 This section includes a reproducible workflow for applying **Geographically Weighted Regression (GWR)** to evaluate the spatial impact of policy variables (e.g. subsidies, coaching) on neighborhood gas consumption.
 
@@ -90,7 +104,7 @@ pip install pandas numpy geopandas shapely libpysal esda scikit-learn mgwr spglm
 
 ---
 
-## 3. Agent-Based Simulation: Interactive Energy Policy Model (GAMA)
+## 4. Agent-Based Simulation: Interactive Energy Policy Model (GAMA)
 
 This model, developed in **GAMA Platform v1.9.1**, simulates how buildings respond to subsidy incentives over time. It provides an interactive way to experiment with policy configurations such as subsidy rates and eligibility thresholds.
 
