@@ -156,7 +156,7 @@ Make sure the following files are present in the `data/` folder:
 
 ### Outputs
 
-- 3D visualization of building upgrades
+- 2D visualization of building upgrades
 - Time series chart of energy consumption
 - Monitors for policy and simulation status
 
